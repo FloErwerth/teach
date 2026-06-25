@@ -1,0 +1,101 @@
+/* Shared lesson stylesheet — Tufte-inspired. Linked by every lesson. */
+:root {
+  --ink: #1a1a1a;
+  --paper: #fffef9;
+  --rule: #d9d4c5;
+  --accent: #7a1f1f;      /* deep grill-marks red */
+  --accent-soft: #f4e9e9;
+  --muted: #6b6457;
+  --code-bg: #f3f0e7;
+  --good: #2e6b3e;
+  --warn: #9a6a00;
+  --maxw: 41rem;
+}
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  margin: 0 auto;
+  max-width: var(--maxw);
+  padding: 3.5rem 1.4rem 6rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: et-book, Palatino, "Palatino Linotype", Georgia, serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.kicker {
+  font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .4rem;
+}
+h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .6rem; font-weight: 600; }
+h2 {
+  font-size: 1.25rem; margin: 2.6rem 0 .6rem; font-weight: 600;
+  padding-bottom: .25rem; border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 1.02rem; margin: 1.6rem 0 .3rem; font-weight: 600; }
+.lede { font-size: 1.12rem; color: var(--muted); margin: 0 0 1.4rem; font-style: italic; }
+p, li { font-size: 1.02rem; }
+a { color: var(--accent); text-decoration-thickness: .5px; text-underline-offset: 2px; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, monospace;
+  font-size: .86em; background: var(--code-bg);
+  padding: .08em .35em; border-radius: 3px;
+}
+pre {
+  background: var(--code-bg); border: 1px solid var(--rule);
+  border-radius: 6px; padding: .9rem 1rem; overflow-x: auto; font-size: .82rem;
+}
+pre code { background: none; padding: 0; }
+
+blockquote {
+  margin: 1.2rem 0; padding: .2rem 0 .2rem 1.1rem;
+  border-left: 3px solid var(--accent); color: var(--muted); font-style: italic;
+}
+
+/* Callout boxes */
+.box { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.4rem 0; background: #fff; }
+.box.why  { border-left: 4px solid var(--accent); }
+.box.win  { border-left: 4px solid var(--good); }
+.box.warn { border-left: 4px solid var(--warn); }
+.box h3 { margin-top: 0; }
+
+/* The mission tie-in tag */
+.mission-tag {
+  display: inline-block; font-family: "SF Mono", ui-monospace, monospace;
+  font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent);
+  border-radius: 999px; padding: .12rem .6rem; margin-bottom: 1.2rem;
+}
+
+/* Quiz widget */
+.quiz { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.2rem 0; background:#fff; }
+.quiz p.q { font-weight: 600; margin: 0 0 .7rem; }
+.quiz button {
+  display: block; width: 100%; text-align: left; margin: .4rem 0;
+  padding: .55rem .8rem; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper); font: inherit; font-size: .95rem; cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.quiz button:hover { border-color: var(--accent); }
+.quiz button.correct { background: #e7f1e9; border-color: var(--good); }
+.quiz button.wrong   { background: #f7e7e7; border-color: var(--accent); }
+.quiz .feedback { margin: .6rem 0 0; font-size: .92rem; min-height: 1.2rem; color: var(--muted); }
+
+/* Step list for real-world tasks */
+ol.steps { padding-left: 1.2rem; }
+ol.steps li { margin: .5rem 0; }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.6rem 0; }
+
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
+.nav { display: flex; gap: 1rem; flex-wrap: wrap; font-family: "SF Mono", ui-monospace, monospace; font-size: .8rem; }
+
+@media print {
+  body { max-width: none; padding: 0; font-size: 11pt; }
+  .quiz button { break-inside: avoid; }
+  a { color: var(--ink); }
+}

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference · Grilling Session Playbook</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+<style>
+  /* Reference-card local tweaks: denser, print-first */
+  body { padding-top: 2rem; }
+  .card { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; background:#fff; break-inside: avoid; }
+  .card h3 { margin-top: 0; }
+  .triage { display: grid; grid-template-columns: 1fr; gap: .8rem; }
+  .triage .card { margin: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  td, th { border-bottom: 1px solid var(--rule); padding: .4rem .3rem; text-align: left; vertical-align: top; }
+  th { color: var(--accent); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+  .tag { font-family:"SF Mono",ui-monospace,monospace; font-size:.72rem; color:var(--accent); }
+</style>
+</head>
+<body>
+
+<p class="kicker">Reference Card · keep open during sessions</p>
+<h1>Grilling Session Playbook</h1>
+<p class="lede">A one-page operating procedure for being interviewed well by
+<code>grill-with-docs</code>. Print it; keep it beside the terminal.</p>
+
+<h2>Before you start</h2>
+<table>
+<tr><th>Choice</th><th>Do</th></tr>
+<tr><td>Which model</td><td>Grill with your <strong>strongest</strong> model — grilling runs on parametric (training-baked) knowledge. Save cheaper models for <em>implementation</em>, which runs on contextual knowledge.</td></tr>
+<tr><td>How much scope</td><td><strong>One change per grill.</strong> Too broad and the model drifts out of its sharp zone and hides high-fidelity questions. Ask it to chunk a big plan, then grill each chunk separately.</td></tr>
+</table>
+
+<h2>Triage every question into one bucket</h2>
+<div class="triage">
+  <div class="card">
+    <h3>① Verifiable <span class="tag">→ send it to the code</span></h3>
+    <p>The answer is already in the repo (current shape, existing behaviour, how a
+    function works). <strong>Don't recite it.</strong> Say: "Check <code>src/…</code> and tell
+    me what's there." Reciting wastes the loop and risks you misremembering.</p>
+  </div>
+  <div class="card">
+    <h3>② Proposed-and-right <span class="tag">→ approve, move on</span></h3>
+    <p>Its recommended answer matches what you'd have said. Confirm in one word and
+    keep velocity. Most questions should land here as the plan sharpens.</p>
+  </div>
+  <div class="card">
+    <h3>③ Intent / constraint <span class="tag">→ only you know — be precise</span></h3>
+    <p>Product intent, business rules, external API contracts, team conventions not yet
+    written down, "we can't do X because compliance." The model <em>cannot</em> read these.
+    This is the bucket your session exists for. Spend your effort here.</p>
+  </div>
+  <div class="card">
+    <h3>④ High-fidelity <span class="tag">→ prototype, then grill again</span></h3>
+    <p>Can't be answered in words — "one screen or three?", a layout, a flow. Don't force a verbal
+    guess. Park it, build the smallest throwaway prototype, bring the answer back. Loop:
+    <strong>grill → prototype → grill again</strong>.</p>
+  </div>
+</div>
+
+<h2>Rules of engagement</h2>
+<table>
+<tr><th>Situation</th><th>Do</th></tr>
+<tr><td>You reject the recommended answer</td><td>Say <strong>why</strong>. "No, because…" The reason is the signal — a bare "no" makes it guess again.</td></tr>
+<tr><td>It flags a fuzzy term ("Customer or User?")</td><td><strong>Decide</strong>, don't dodge. Your decision becomes canonical language in <code>CONTEXT.md</code>.</td></tr>
+<tr><td>It invents an edge-case scenario</td><td>Engage concretely. Edge cases are where wrong assumptions hide — answer the specific case, not the general shape.</td></tr>
+<tr><td>It contradicts your code</td><td>Resolve it out loud. One of the two is wrong; decide which before any code is written.</td></tr>
+<tr><td>You catch yourself only answering what's asked</td><td><strong>Steer.</strong> A grill is a conversation, not an interview — redirect off-scope branches, volunteer constraints, call the end. Passive grills sprawl and the scope explodes.</td></tr>
+</table>
+
+<h2>Stop signals — end the session</h2>
+<p>The goal is <em>shared understanding</em>, not exhaustion. Stop and tell it to proceed when:</p>
+<ul>
+<li>New questions have gone trivial — you're approving every recommendation unchanged.</li>
+<li>No unexplored branches remain on the design tree.</li>
+<li>You could write the implementation yourself from the answers so far.</li>
+</ul>
+<p>Then: "Good — write the plan / proceed." Lingering past this point is its own waste.</p>
+
+<h2>After you stop</h2>
+<ul>
+<li><strong>Don't just <code>/clear</code>.</strong> The context is full of decisions you paid for.
+Implement in the same session, or make sure each decision became a glossary line, an ADR, or the
+written plan first.</li>
+<li><strong>Optional throughput:</strong> you can run two grills in parallel — answer one while the
+other is thinking. Still fully hand-driven (you steer each), just more than most people will want to
+track at once.</li>
+</ul>
+
+<footer>
+<div class="nav">
+  <a href="../lessons/0000-install-the-skill.html">← Lesson 00</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="../MISSION.md">Mission</a>
+</div>
+</footer>
+</body>
+</html>

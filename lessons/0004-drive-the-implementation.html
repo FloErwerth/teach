@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4 · Drive the implementation, don't hand over the wheel</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 04 · Human-in-the-loop AI coding</p>
+<h1>Drive the implementation, don't hand over the wheel</h1>
+<p class="lede">A sharp grill earns you a shared plan. The temptation now is to spend it all in one
+breath — "implement the whole thing" — and walk away. That single move hands back the wheel and
+re-inherits every problem grilling just solved.</p>
+
+<span class="mission-tag">Mission: the model types, you decide — every step</span>
+
+<h2>Last lesson, in one breath</h2>
+<p>Before clicking anything: in Lesson 3 you split the two surviving artifacts by job —
+<code>CONTEXT.md</code> captures language, an ADR captures a <em>what</em>? Answer from memory,
+then check the quiz below.</p>
+
+<h2>The trap: "now build it all"</h2>
+<p>You finish a clean grill. The plan is tight, the terms are decided, the trade-off is recorded.
+So you type "great, implement all of it" and let it run unattended. That is an autonomous agent
+workflow by another name — the exact thing this mission rules out — and the cost is concrete: a
+large diff you never watched take shape, stuffed with micro-decisions you didn't see made. Now you
+must reverse-engineer those decisions in review. Or worse, your colleague does, in comments.</p>
+
+<p>Grilling moved the context cost upstream so it'd be cheap. Handing over the wheel at
+implementation drags it right back downstream. The plan was supposed to be <em>spent in the open</em>,
+not cashed in behind your back.</p>
+
+<div class="box why">
+<h3>The shift: spend the plan in small, watched increments</h3>
+<p>The grill already drew the design tree. Implementation walks that tree <strong>one branch at a
+time</strong>, and you read every diff before authorising the next. The model's hands are on the
+keyboard; yours stay on the wheel. You are the author of <em>intent</em> — it is merely the author of
+<em>syntax</em>. That division is the whole discipline of "human-in-the-loop."</p>
+</div>
+
+<h2>Five moves that keep you driving</h2>
+
+<h3>Slice the plan into reviewable steps</h3>
+<p>You don't need to invent the slices — the grill produced them. Each resolved branch of the design
+tree is a step. Implement one, not the tree in a single generation. Small steps keep each diff inside
+the span you can actually hold in your head.</p>
+
+<h3>If a step is too big to read, it was too big to generate</h3>
+<p>Cap each generation at what you will genuinely review line by line. A diff you skim is a diff you
+didn't review — and it carries exactly the unseen micro-decisions you ran the grill to eliminate.
+When a generation overflows that budget, that's the signal to slice finer, not to trust harder.</p>
+
+<h3>Re-read every step's diff and adjust on the spot</h3>
+<p>Each generated step gets a real read, not a skim — eyeball the diff as a reviewer, not its author,
+while the context is still hot and the change is only one step wide. When something's off — a name, a
+shortcut, an assumption you didn't authorise — ask the question or make the correction <strong>right
+there</strong>, before you authorise the next step. An adjustment made now is a keystroke; the same fix
+after five more steps land on top is an unpick. The next two moves are the corrections you'll make most.</p>
+
+<h3>Hold the model to the decided language and decisions</h3>
+<p>When a generation drifts from a <code>CONTEXT.md</code> term — calls it <code>Route</code> when you
+decided <code>Trip</code> — or quietly contradicts an ADR's choice, that is a <strong>stop-and-correct
+on the spot</strong>, not a review comment for later. The artifacts from Lesson 3 are only worth the
+ink if you enforce them while the code is being written.</p>
+
+<h3>A new question mid-implementation means stop and grill</h3>
+<p>If a step surfaces a decision the grill never resolved, you've found a missing branch — not an
+excuse for the model to pick a plausible default and move on. Stop. Grill that branch the same way you
+grilled the rest, then resume. A guess papered over here is a wrong assumption your reviewer inherits.</p>
+
+<blockquote>An autonomous run optimises for <em>finishing</em>. You optimise for a diff your reviewer
+approves on the first pass. Those are not the same objective — and only one of them is yours to defend.</blockquote>
+
+<h2>Staying the driver isn't slower</h2>
+<p>It feels slower because the effort is visible. But every step you watch is a review comment that
+never gets written, a wrong term never calcified, a guessed default never shipped. The grill front-loaded
+the <em>thinking</em>; controlled implementation front-loads the <em>catching</em>. Both move cost off
+your colleague's desk and onto your own keyboard, where it's cheapest to pay.</p>
+
+<h2>Check yourself</h2>
+<p>Retrieval, not recognition. The first question is a deliberate callback to Lesson 3.</p>
+
+<div class="quiz" id="quiz">
+  <div data-q>
+    <p class="q">1. <em>(Recall)</em> <code>CONTEXT.md</code> captures language; an ADR captures a…</p>
+    <button data-correct>Decision</button>
+    <button>Synonym</button>
+    <button>Behaviour</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">2. After a sharp grill, the failure mode this lesson warns against is…</p>
+    <button>Coding it all by hand yourself</button>
+    <button data-correct>Handing the whole plan to one unwatched run</button>
+    <button>Writing one more ADR</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">3. A generated step too big to actually read line by line was…</p>
+    <button>Ready to commit</button>
+    <button data-correct>Too big to generate</button>
+    <button>Fine, once CI is green</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">4. A decision the grill never resolved surfaces mid-implementation. You…</p>
+    <button>Let the model pick a sensible default</button>
+    <button data-correct>Stop and grill that branch</button>
+    <button>Defer it to PR review</button>
+    <p class="feedback"></p>
+  </div>
+</div>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Implement one grilled change without a single "build it all" prompt</h3>
+<p>Take a change you've already grilled (Lessons 1–3) and implement it under your own hand:</p>
+<ol class="steps">
+<li>Slice it into steps you can each read <strong>in full</strong>. Drive one step, read the diff,
+then authorise the next — never the whole tree at once.</li>
+<li>Catch <strong>one</strong> moment the model drifts from a <code>CONTEXT.md</code> term or an ADR's
+choice. Correct it on the spot, before the next step — not in a comment later.</li>
+<li>Catch <strong>one</strong> moment a step surfaces an unresolved decision. Stop, grill that branch,
+then resume. Don't let it guess past you.</li>
+</ol>
+<p>Bring me the drift you caught and the branch you re-grilled. They tell me exactly where Lesson 5 —
+locally reviewing the finished diff — should aim.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>Unsure whether a step is small enough to count as "reviewable," or whether a mid-implementation
+question is a genuine missing branch versus noise? That judgement is the skill. Paste me the step or
+the question and I'll help you call it.</p>
+</div>
+
+<h2>Read this next</h2>
+<p>There's no installed skill that governs implementation — this is a learner-driven practice, by
+design. So your primary sources here are the ones <em>you</em> produced: the plan and
+<code>CONTEXT.md</code> from your own grill, implemented against the mission's hard constraint —
+<a href="../MISSION.md">MISSION.md</a>, the line that says <em>human drives each step, no autonomous
+agent workflows</em>. Re-read that constraint, then keep the
+<a href="../reference/grilling-session-playbook.html">Playbook</a> handy — a mid-implementation
+question is just another grill.</p>
+
+<footer>
+<div class="nav">
+  <a href="0003-artifacts-the-team-inherits.html">← Lesson 03</a>
+  <a href="../reference/grilling-session-playbook.html">Playbook</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="0005-local-review-the-diff.html">Next → Lesson 05</a>
+</div>
+</footer>
+
+<script>
+document.querySelectorAll('#quiz [data-q]').forEach(function (q) {
+  var fb = q.querySelector('.feedback');
+  q.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      q.querySelectorAll('button').forEach(function (x){ x.disabled = true; });
+      if (b.hasAttribute('data-correct')) {
+        b.classList.add('correct'); fb.textContent = 'Correct.';
+      } else {
+        b.classList.add('wrong');
+        var c = q.querySelector('[data-correct]'); c.classList.add('correct');
+        fb.textContent = 'Not quite — the highlighted answer is right.';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

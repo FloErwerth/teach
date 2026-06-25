@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2 · Answer like the expert in the room</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 02 · Human-in-the-loop AI coding</p>
+<h1>Answer like the expert in the room</h1>
+<p class="lede">A grilling session is only as good as your answers. The skill supplies the
+questions and a recommendation — your edge is knowing which questions only <em>you</em> can
+answer, and answering those with precision.</p>
+
+<span class="mission-tag">Mission: front-load the context only you hold</span>
+
+<h2>Last lesson, in one breath</h2>
+<p>Before clicking anything: in Lesson 1, what did every grilling question arrive paired with?
+Answer from memory, then check the quiz below. (That recall is deliberate — it's how this sticks.)</p>
+
+<h2>The trap: answering everything yourself</h2>
+<p>Now that you can invoke a grill, the new failure mode is treating it like an oral exam where
+you must answer every question. You don't. Some questions the model should verify itself; some it
+has already answered correctly; and a precious few only you can answer. Spending equal effort on
+all three is how a good session turns slow and shallow.</p>
+
+<div class="box why">
+<h3>Triage every question into one bucket</h3>
+<p><strong>① Verifiable</strong> — the answer's in the repo. Don't recite it; tell it to read the
+code. <strong>② Proposed-and-right</strong> — its recommendation matches yours; approve and move on.
+<strong>③ Intent / constraint</strong> — product intent, business rules, external contracts, unwritten
+team conventions. The model <em>cannot</em> read these. This is the bucket your session exists for.</p>
+<p>The whole game is routing fast through ① and ②, so your attention pools on ③.</p>
+</div>
+
+<p>The full version lives on your new
+<a href="../reference/grilling-session-playbook.html">Grilling Session Playbook</a> reference card —
+print it and keep it beside the terminal.</p>
+
+<h2>A fourth outcome: some questions have no verbal answer</h2>
+<p>Sometimes a question fits none of the three buckets because it can't be settled in words at all.
+"Should this form be one screen or three?" is <strong>high-fidelity</strong> — you need to <em>see</em>
+it before you can answer. Forcing a reply in chat just bakes in a guess. The move is a handoff loop:
+<strong>grill → prototype → grill again</strong>. Park that branch, build the smallest throwaway
+prototype that answers it (well worth it for RN/Expo UI), then carry the answer back into the session
+and keep resolving the low-fidelity branches as normal. Trying to resolve high-fidelity questions by
+conversation alone is one of the classic grilling mistakes.</p>
+
+<h2>Two moves that multiply the signal</h2>
+<h3>Reject with reasons</h3>
+<p>When the recommended answer is wrong, the <em>reason</em> is the highest-value thing you can
+say. "No" makes it guess again. "No, because the trip cache must survive a cold app launch, so it
+can't live in memory" gives it a constraint it will respect for the rest of the session — and one
+your reviewer would otherwise have raised as a comment.</p>
+
+<h3>Decide the language, don't dodge it</h3>
+<p>When it asks "do you mean <em>Customer</em> or <em>User</em>?", that's not pedantry — it's the
+skill sharpening fuzzy terms before they calcify into wrong code. Pick one. Your decision becomes
+canonical language in <code>CONTEXT.md</code>, and the next engineer inherits the precision instead
+of the ambiguity.</p>
+
+<blockquote>The skill stress-tests with invented edge-case scenarios on purpose. Engage the
+specific case, not the general shape — edge cases are exactly where wrong assumptions hide.</blockquote>
+
+<h2>Steer it — a grill is a conversation, not an interview</h2>
+<p>The "interviewee" framing has a failure mode of its own: going <em>passive</em> — answering only what
+you're asked and letting the model set the entire agenda. A passive grill sprawls. It spins up more and
+more questions, and the scope quietly explodes past what you set out to plan. You're still the senior in
+the room: redirect when a branch doesn't matter ("skip that — out of scope"), volunteer a constraint
+before it asks, and call the session when it's done. Active steering is the difference between a grill
+that converges and one that wanders.</p>
+
+<h2>Know when to stop</h2>
+<p>The target is <em>shared understanding</em>, not exhaustion. When new questions go trivial, no
+branches remain, and you could write the implementation yourself from the answers so far — stop and
+say "good, proceed." Grilling past that point is its own kind of waste.</p>
+
+<h2>Check yourself</h2>
+<p>Retrieval, not recognition. The first question is a deliberate callback to Lesson 1.</p>
+
+<div class="quiz" id="quiz">
+  <div data-q>
+    <p class="q">1. <em>(Recall)</em> Each grilling question arrives paired with…</p>
+    <button data-correct>Its recommended answer</button>
+    <button>A multiple choice</button>
+    <button>A scenario list</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">2. A question about how an existing function behaves belongs in bucket…</p>
+    <button data-correct>Verifiable — read code</button>
+    <button>Intent — you answer</button>
+    <button>Proposed — approve fast</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">3. When you reject the recommended answer, you must also give…</p>
+    <button data-correct>The underlying reason</button>
+    <button>A code example</button>
+    <button>A better wording</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">4. The right moment to end a grilling session is when…</p>
+    <button>Every branch is questioned</button>
+    <button data-correct>Understanding is shared</button>
+    <button>The model stops asking</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">5. A high-fidelity question — "one screen or three?" — is best handled by…</p>
+    <button data-correct>Prototyping it, then grilling again</button>
+    <button>Picking whatever the model recommends</button>
+    <button>Answering it as carefully as you can in chat</button>
+    <p class="feedback"></p>
+  </div>
+</div>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Run a session with the triage card open</h3>
+<ol class="steps">
+<li>Open the <a href="../reference/grilling-session-playbook.html">Playbook</a> beside your next
+real grilling session.</li>
+<li>For each question, silently name its bucket — ①, ②, or ③ — before you answer.</li>
+<li>Catch <strong>one</strong> question you instinctively started to answer that you should have
+told the model to verify in the code. That instinct is the habit we're breaking.</li>
+<li>Catch <strong>one</strong> bucket-③ question and answer it with an explicit reason or
+constraint, not just a value.</li>
+</ol>
+<p>Bring me the two you caught. They tell me exactly where Lesson 3 should aim.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>Stuck on whether a question is "verifiable" or "intent"? That boundary is genuinely subtle —
+paste me the question and I'll help you place it. Getting fluent at the triage is most of this skill.</p>
+</div>
+
+<h2>Read this next</h2>
+<p><strong>Primary source:</strong>
+<a href="file:///Users/forli/.agents/skills/grill-with-docs/SKILL.md">grill-with-docs/SKILL.md</a> —
+the "During the session" block: <em>Sharpen fuzzy language</em>, <em>Discuss concrete scenarios</em>,
+and <em>Cross-reference with code</em>. Those three headings are buckets ③, scenarios, and ① in the
+skill's own words.</p>
+
+<footer>
+<div class="nav">
+  <a href="0001-grill-before-you-build.html">← Lesson 01</a>
+  <a href="../reference/grilling-session-playbook.html">Playbook</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="0003-artifacts-the-team-inherits.html">Next → Lesson 03</a>
+</div>
+</footer>
+
+<script>
+document.querySelectorAll('#quiz [data-q]').forEach(function (q) {
+  var fb = q.querySelector('.feedback');
+  q.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      q.querySelectorAll('button').forEach(function (x){ x.disabled = true; });
+      if (b.hasAttribute('data-correct')) {
+        b.classList.add('correct'); fb.textContent = 'Correct.';
+      } else {
+        b.classList.add('wrong');
+        var c = q.querySelector('[data-correct]'); c.classList.add('correct');
+        fb.textContent = 'Not quite — the highlighted answer is right.';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

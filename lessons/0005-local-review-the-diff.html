@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5 · Local review — read the diff like a senior</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 05 · Human-in-the-loop AI coding</p>
+<h1>Local review — read the diff like a senior</h1>
+<p class="lede">Green CI and a feature that works is not a reviewable PR. Before any colleague
+sees it, run the diff through Claude Code's <code>/code-review</code> — and adjudicate what it finds —
+as if it were a junior's PR you'd been handed cold. The tool does the line-by-line sweep; you make the
+calls it can't.</p>
+
+<span class="mission-tag">Mission: catch it before your colleague has to</span>
+
+<h2>Last lesson, in one breath</h2>
+<p>Before clicking anything: in Lesson 4 you ran the implementation in small, watched steps. What
+was the rule about any single generated step you couldn't read line by line — what did that make it,
+in three words? Answer from memory, then check the quiz below.</p>
+
+<h2>The trap: "CI is green, ship it"</h2>
+<p>The pipeline passes. The feature works on your simulator. So you open the PR and tag a reviewer.
+But CI only checks the machine-checkable — types compile, tests pass, lint is clean. It says nothing
+about whether the diff matches the <em>ticket</em>, whether it uses your decided language, whether the
+edges you fought to specify actually got coded, or whether the tests test anything at all.</p>
+
+<p>Skip local review and your colleague becomes your <strong>first</strong> reviewer — the most
+expensive one on the chain. Every issue they catch is a comment, a round-trip, a context-reload on
+both desks. That is precisely the downstream cost you ran the grill to move upstream. Hand the diff
+over unread and you quietly undo it.</p>
+
+<div class="box why">
+<h3>The shift: drive the review, don't do the scan by hand</h3>
+<p>The trap is author's bias — "I described it, so I trust it." But you wrote the <em>intent</em>; the
+model wrote the <em>syntax</em>. Those are different authors, so the syntax needs an adversarial audit —
+and reading every line yourself is the slow, lossy way to do it. Hand the mechanical sweep to
+<code>/code-review</code>, run hard, and spend your attention where the tool is blind: does the diff
+match the <em>ticket</em>, your decided language, the edges you grilled? The model optimises for
+<strong>plausible</strong>; your job is to judge where plausible isn't correct — not to be the scanner.</p>
+</div>
+
+<h2>Run /code-review first — at <code>high</code> effort or more</h2>
+<p>Before you read a line yourself, put the whole diff through <code>/code-review</code> (Claude Code's
+built-in review skill) at <strong>at least <code>high</code> effort</strong> — a low-effort pass on a
+handoff diff is barely a pass. Read its findings as an adversary and decide each one — it flags, you
+adjudicate; never auto-accept.</p>
+
+<h2>Three checks the tool can't make for you</h2>
+<p><code>/code-review</code> doesn't know your ticket, your <code>CONTEXT.md</code>, or what you pinned
+in the grill. These stay yours — and they're where your attention goes once the mechanical sweep is
+done. None of them are things a pipeline, or the tool, will catch.</p>
+
+<h3>Scope creep — did it touch more than the ticket?</h3>
+<p>Drive-by refactors, reformatted files you never asked it to format, an unrelated edit it "noticed
+while it was in there." Each one buries the real change and forces your reviewer to separate signal
+from noise. If a hunk isn't the ticket, revert it or split it out.</p>
+
+<h3>Decided language and decisions honored</h3>
+<p>Does the diff use the canonical <code>CONTEXT.md</code> terms, or did it slip back to a synonym you
+already rejected? Does it respect the ADRs you recorded? A grilled decision that the implementation
+quietly contradicts is worse than no decision — it reads as agreed when it isn't. (Callback to
+Lessons 3–4.)</p>
+
+<h3>Edge cases and error paths</h3>
+<p>Find the edges you pinned in the grill and check each one is in the diff. The model reliably nails
+the happy path and silently drops the error path, the empty state, the offline case — the exact edges
+you spent the session specifying. They don't show up as failures; they show up as nothing.</p>
+
+<blockquote>The grill front-loaded the thinking; controlled implementation front-loaded the catching
+<em>during</em>; local review is the last catch before handoff. Every issue you find here is a review
+comment your colleague never has to write.</blockquote>
+
+<h2>Check yourself</h2>
+<p>Retrieval, not recognition. The first question is a deliberate callback to Lesson 4.</p>
+
+<div class="quiz" id="quiz">
+  <div data-q>
+    <p class="q">1. <em>(Recall)</em> A generated step too big to actually read line by line was…</p>
+    <button>Ready to commit</button>
+    <button data-correct>Too big to generate</button>
+    <button>Fine, once CI is green</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">2. Local review works because you read the diff as its…</p>
+    <button>Author, who knows the intent</button>
+    <button data-correct>Adversary, judging what the review flags</button>
+    <button>Approver, trusting green CI</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">3. A diff that reformats three unrelated files alongside the fix is…</p>
+    <button>Fine — it's all in one PR</button>
+    <button data-correct>Scope creep — split it out</button>
+    <button>A CI problem, not yours</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">4. The question that tells you a test is meaningful is…</p>
+    <button>Does it mock every collaborator?</button>
+    <button>Does it mirror the implementation?</button>
+    <button data-correct>Would it fail if the logic broke?</button>
+    <p class="feedback"></p>
+  </div>
+</div>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Locally review your Lesson 4 diff before the PR exists</h3>
+<p>Take the change you implemented under your own hand in Lesson 4 and run it through the checklist —
+<strong>before</strong> you open the PR:</p>
+<ol class="steps">
+<li>Run <code>/code-review</code> at <strong>at least <code>high</code> effort</strong> over the diff
+<strong>first</strong> — that's your primary sweep, run before a colleague or CodeRabbit ever sees it.
+Read its findings as an adversary and decide each one; don't auto-accept.</li>
+<li>Then run the three checks the tool can't make. Catch <strong>one</strong> bit of scope creep — a
+hunk that isn't the ticket — and split it out. Find <strong>one</strong> decided <code>CONTEXT.md</code>
+term it dropped, or one grilled edge missing from the diff. Pick <strong>one</strong> test and confirm
+it would actually fail if the logic broke.</li>
+<li>Fix what surfaced — and <em>you</em> decide how. A finding that reopens a real decision goes back
+through a grill (Lessons 1–2); a finding small enough to fix directly you just fix. That call is yours
+as the reviewee, not the tool's.</li>
+<li>Then <strong>run <code>/code-review</code> again</strong> on the corrected diff — a fix can
+introduce its own issue, so the loop closes only when a clean pass comes back. Re-review, fix,
+re-review until it does; <em>then</em> you're ready to hand off.</li>
+</ol>
+<p>Bring me what you caught. Once the diff is reviewed and those adjustments are in, the ticket is
+<strong>ready for the next step in your Scrum flow</strong> — open the PR, move the card to review, hand
+it to your colleague. Local review is the gate it passes through to get there; clear it, and the work
+moves on.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>On the fence about a hunk — "is this scope creep or genuinely necessary to make the ticket work?"
+That call is the skill. Paste me the diff or the finding you're unsure about and I'll help you judge it.</p>
+</div>
+
+<h2>Read this next</h2>
+<p><code>/code-review</code> does the heavy scanning so you don't read every line by hand — but it can't
+judge your diff against your ticket, your decided language, or the edges you grilled. That judgment, and
+the call on every finding it raises, stays the human's: it's the practice this lesson teaches, the same
+way controlled implementation was in Lesson 4. Anchor it in the mission's constraint —
+<a href="../MISSION.md">MISSION.md</a>, the line that says <em>review AI-generated diffs against a
+personal checklist and catch issues before a colleague ever sees them</em>. And if review turns up a
+decision the grill never resolved — an un-grilled branch hiding in the diff — that's not a review
+comment, it's a return trip to the <a href="../reference/grilling-session-playbook.html">Playbook</a>.</p>
+
+<footer>
+<div class="nav">
+  <a href="0004-drive-the-implementation.html">← Lesson 04</a>
+  <a href="../reference/grilling-session-playbook.html">Playbook</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="../MISSION.md">Mission ✓ loop complete</a>
+</div>
+</footer>
+
+<script>
+document.querySelectorAll('#quiz [data-q]').forEach(function (q) {
+  var fb = q.querySelector('.feedback');
+  q.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      q.querySelectorAll('button').forEach(function (x){ x.disabled = true; });
+      if (b.hasAttribute('data-correct')) {
+        b.classList.add('correct'); fb.textContent = 'Correct.';
+      } else {
+        b.classList.add('wrong');
+        var c = q.querySelector('[data-correct]'); c.classList.add('correct');
+        fb.textContent = 'Not quite — the highlighted answer is right.';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

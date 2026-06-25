@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0 · Install the skill, once, for every repo</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 00 · Human-in-the-loop AI coding</p>
+<h1>Install the skill, once, for every repo</h1>
+<p class="lede">Before you can grill, the <code>grill-with-docs</code> skill has to exist on your
+machine — and it should live <em>globally</em>, so the discipline travels with you to every project
+and every teammate can install it the same way.</p>
+
+<span class="mission-tag">Mission: the workflow is one command away, everywhere</span>
+
+<h2>Why global, not per-project</h2>
+<p>A grilling-first workflow is only a habit if it's always there. Install the skill into a single
+repo and you'll skip the grill the moment you switch projects — which is most of the day. A
+<strong>global</strong> (user-level) install registers it once for your account, so
+<code>grill-with-docs</code> is available in every repo you open. Your colleagues run the exact same
+command on their machines; the team converges on one shared method instead of one person's local
+trick.</p>
+
+<div class="box why">
+<h3>The tool: <code>skills</code> (skills.sh)</h3>
+<p>Matt Pocock's skills ship through the open <a href="https://skills.sh"><code>skills</code></a>
+CLI, run via <code>npx</code> — the same package runner that comes with Node.js. It's agent-agnostic
+(Claude Code, Cursor, Copilot, and ~20 more) and cross-platform, so the one command below works
+identically on <strong>macOS and Linux</strong>. The catalogue, including <code>grill-with-docs</code>,
+lives at <a href="https://github.com/mattpocock/skills">github.com/mattpocock/skills</a>.</p>
+</div>
+
+<h2>Prerequisite: Node.js</h2>
+<p>You need <code>npx</code>, which ships with Node. Check with <code>node -v</code>. If it's missing:</p>
+<pre><code># macOS (preferred)
+brew install node
+
+# Linux (Debian/Ubuntu) — or use your distro's package / nvm
+sudo apt install nodejs npm</code></pre>
+
+<h2>Install it</h2>
+<p>One command starts the installer — nothing to memorise:</p>
+<pre><code>npx skills@latest add mattpocock/skills</code></pre>
+
+<p>It then walks you through a short questionnaire. Answer the three prompts and you're done:</p>
+
+<ol class="steps">
+<li><strong>Which skill?</strong> Pick <code>grill-with-docs</code> from the list (it's the one this
+course is built on).</li>
+<li><strong>Which agent?</strong> Select <strong>claude</strong> — that's Claude Code, the agent you'll
+run the grill in.</li>
+<li><strong>Project or global?</strong> Choose <strong>global</strong>. This is the answer that makes
+the skill follow you into every repo, instead of living in just one folder.</li>
+</ol>
+
+<p>That third answer is the whole point of this lesson: <strong>global</strong> registers the skill
+once for your user account, so <code>grill-with-docs</code> is there in every project you open and your
+teammates run the identical command and answer the same three prompts to converge on the same method.</p>
+
+<h2>Where it lands — and how to verify</h2>
+<p>A global install drops the skill's source into a shared, agent-agnostic directory and
+<em>symlinks</em> it into each agent's skills folder. The same layout on macOS and Linux:</p>
+
+<pre><code>~/.agents/skills/grill-with-docs            # the actual skill (source of truth)
+~/.claude/skills/grill-with-docs  ->  ../../.agents/skills/grill-with-docs   # symlink Claude Code reads</code></pre>
+
+<p>That symlink is why this is the primary source the rest of the course points at
+(<a href="file:///Users/forli/.agents/skills/grill-with-docs/SKILL.md">SKILL.md</a>). Confirm the
+install two ways:</p>
+
+<ol class="steps">
+<li><code>npx skills@latest list</code> (or <code>skills ls</code>) — shows what's installed and where.</li>
+<li>In Claude Code, type <code>/grill-with-docs</code>. If it resolves to a command, you're done —
+that's the skill you'll run in Lesson 1.</li>
+</ol>
+
+<blockquote>Keeping the source in <code>~/.agents/skills</code> and symlinking into each agent means one
+update propagates everywhere. To refresh later: <code>npx skills@latest update</code>.</blockquote>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Install it globally, then have a teammate do the same</h3>
+<ol class="steps">
+<li>Run the install command above. Verify with <code>skills ls</code> and by typing
+<code>/grill-with-docs</code> in Claude Code.</li>
+<li>Open a <em>different</em> repo and confirm the command is still there — that's the payoff of a
+global install.</li>
+<li>Send the one-liner to a colleague (Mac or Linux) and have them install it too. The whole point is
+a <em>shared</em> method — by Lesson 1 you both grill the same way.</li>
+</ol>
+<p>Once <code>/grill-with-docs</code> resolves, you're ready for Lesson 1: turning the conversation
+around so the AI grills <em>you</em>.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>Install errored, or <code>/grill-with-docs</code> won't resolve? Paste me the terminal output and
+tell me how you answered the prompts — the usual culprits are a missing Node, picking the wrong agent,
+or choosing <em>project</em> at the scope prompt when you meant <em>global</em>.</p>
+</div>
+
+<h2>Read this next</h2>
+<p><strong>Primary source:</strong> the skills catalogue and installer —
+<a href="https://github.com/mattpocock/skills">github.com/mattpocock/skills</a> and
+<a href="https://skills.sh">skills.sh</a>. Run <code>npx skills@latest add mattpocock/skills</code>,
+answer the three prompts (skill → <strong>claude</strong> → <strong>global</strong>), and move to
+Lesson 1.</p>
+
+<footer>
+<div class="nav">
+  <a href="../MISSION.md">Mission</a>
+  <a href="../RESOURCES.md">Resources</a>
+  <a href="0001-grill-before-you-build.html">Next → Lesson 01</a>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 · Grill before you build</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 01 · Human-in-the-loop AI coding</p>
+<h1>Grill before you build</h1>
+<p class="lede">The highest-leverage move in AI-assisted coding happens before a single
+line is written: turning the conversation around so the AI interrogates <em>you</em>.</p>
+
+<span class="mission-tag">Mission: fewer review rounds, you in control</span>
+
+<h2>The problem with prompt-first</h2>
+<p>As a daily Claude Code user you already know the failure mode: you describe a change
+("add offline caching to the trip screen"), the model writes plausible code, and then you
+spend three rounds correcting it — wrong data shape, wrong edge cases, a term that means
+something else in your codebase. Each correction is <em>context you should have supplied up front.</em></p>
+
+<p>When that half-understood code reaches a colleague's PR review, they catch the same gaps —
+slowly, expensively, in comments. The cost didn't disappear; it moved downstream to the most
+expensive reviewer.</p>
+
+<div class="box why">
+<h3>The shift: context-first</h3>
+<p>Instead of <strong>prompt → code → correct</strong>, you run <strong>grill → shared
+understanding → code</strong>. You pay the context cost once, deliberately, while it's cheap —
+not repeatedly in review. This is the whole reason the <code>grill-with-docs</code> skill exists.</p>
+</div>
+
+<h2>The grilling loop</h2>
+<p>A grilling session inverts the usual dynamic. From the actual installed skill
+(<a href="file:///Users/forli/.agents/skills/grill-with-docs/SKILL.md">SKILL.md</a>, your
+primary source), four mechanics define it:</p>
+
+<ol class="steps">
+<li><strong>One question at a time.</strong> It walks down each branch of the design tree,
+resolving dependencies between decisions one by one — and waits for your answer before moving on.</li>
+<li><strong>Every question comes with its recommended answer.</strong> You're not staring at a
+blank prompt; you're approving, rejecting, or refining a proposal. Much lower effort, much higher signal.</li>
+<li><strong>It explores the codebase instead of asking</strong> whenever a question can be
+answered by reading the code. It won't make you recite what it can verify.</li>
+<li><strong>It writes understanding down as it crystallises</strong> — sharpening terminology
+in <code>CONTEXT.md</code> and recording real trade-offs as ADRs, inline, not batched at the end.</li>
+</ol>
+
+<p>You invoke it the same way you'd invoke any skill — point Claude Code at the plan and ask it
+to grill you with <code>grill-with-docs</code> before writing code. Then your job changes from
+<em>author</em> to <em>interviewee</em>: answer precisely, correct fuzzy language, and let it dig.</p>
+
+<h2>What "with docs" adds</h2>
+<p>Plain "grill me" is the interrogation loop on its own. <strong>grill-with-docs</strong> adds a
+domain layer: it challenges your plan against your project's existing language and recorded
+decisions. If you say "cancel the booking" but the glossary defines cancellation differently — or
+your code already does it another way — it surfaces the contradiction on the spot. The artefact
+that survives is a tightened <code>CONTEXT.md</code> glossary your whole team can read.</p>
+
+<blockquote>CONTEXT.md is a glossary and nothing else — no implementation details, no spec.
+That constraint is what keeps it valuable.</blockquote>
+
+<h2>Set the grill up before you run it</h2>
+<p>Two choices made <em>before</em> the first question decide how good the session can be — and they're
+two of the most common ways a grill starts handicapped (drawn from AI Hero's writeup on grilling
+mistakes, cited at the foot of this lesson).</p>
+
+<div class="box why">
+<h3>Grill with your strongest model; scope it small</h3>
+<p><strong>Use a frontier model to grill.</strong> Grilling runs on the model's <em>parametric</em>
+knowledge — the judgement baked into its training — not on your repo. A weaker model gives weaker ideas
+and tamer questions. Reach for the most capable model (Opus) here; you can drop to something cheaper for
+<em>implementation</em>, where the knowledge that matters is <em>contextual</em> — your files, your plan,
+the answers you just gave.</p>
+<p><strong>Scope one grill to one change.</strong> Too large a scope drags the conversation out of the
+model's sharp zone — attention frays as the context window fills, well before any hard limit — and broad
+plans hide high-fidelity questions you can't settle in words yet (Lesson 2). If the plan is big, ask it to
+break the scope into chunks and grill each one separately.</p>
+</div>
+
+<h2>Check yourself</h2>
+<p>Retrieval, not recognition — answer from memory before clicking.</p>
+
+<div class="quiz" id="quiz">
+  <div data-q>
+    <p class="q">1. How does a grilling session deliver its questions?</p>
+    <button data-correct>One at a time</button>
+    <button>All up front</button>
+    <button>Only when stuck</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">2. When a question is answerable from the code, the skill should…</p>
+    <button>Ask you anyway</button>
+    <button data-correct>Explore the codebase</button>
+    <button>Pick a default</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">3. Each grilling question arrives paired with…</p>
+    <button data-correct>Its recommended answer</button>
+    <button>A multiple choice</button>
+    <button>A docs link</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">4. CONTEXT.md should contain only…</p>
+    <button>The implementation plan</button>
+    <button data-correct>The domain glossary</button>
+    <button>Every decision made</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">5. Grilling leans on the model's <em>parametric</em> knowledge, so run it with…</p>
+    <button data-correct>Your strongest (frontier) model</button>
+    <button>The cheapest model that writes code</button>
+    <button>Whatever model is already open</button>
+    <p class="feedback"></p>
+  </div>
+</div>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Run one grill before you build</h3>
+<p>Take the <em>next real ticket</em> you'd normally just prompt Claude Code to implement.
+Before writing any code:</p>
+<ol class="steps">
+<li>Describe the change and the relevant files, then ask Claude Code to run
+<code>grill-with-docs</code> on the plan and <strong>not write code yet</strong>.</li>
+<li>Answer its questions precisely. When it proposes a recommended answer you disagree with,
+say why — that's the highest-value signal you can give.</li>
+<li>Notice the moment it would normally have guessed wrong. That caught gap is one fewer
+review comment from a colleague.</li>
+<li>Let it update <code>CONTEXT.md</code>. Skim the glossary it produces — is your team's
+language actually that precise today?</li>
+</ol>
+<p>Come back and tell me what it caught. That becomes the seed for Lesson 2.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>I'm your teacher for this, not just a doc. If a grilling session goes sideways, paste me the
+transcript and ask what you should have answered differently. If you're unsure whether a decision
+deserves an ADR, ask. That's what I'm here for.</p>
+</div>
+
+<h2>Read this next</h2>
+<p><strong>Primary source:</strong> the installed skill itself —
+<a href="file:///Users/forli/.agents/skills/grill-with-docs/SKILL.md">grill-with-docs/SKILL.md</a>.
+Read the <code>&lt;what-to-do&gt;</code> and "During the session" sections. It is short, and it is
+ground truth — not my paraphrase.</p>
+
+<p><strong>Where the setup advice comes from:</strong> AI Hero (Matt Pocock),
+<a href="https://www.aihero.dev/things-people-get-wrong-with-grill-me-and-grill-with-docs">things people
+get wrong with grill-me and grill-with-docs</a>. The model-choice, scope, prototype-handoff, and
+don't-clear-the-context points threaded through Lessons 1–3 are drawn from it.</p>
+
+<footer>
+<div class="nav">
+  <a href="0000-install-the-skill.html">← Lesson 00</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="../RESOURCES.md">Resources</a>
+  <a href="0002-answer-like-the-expert.html">Next → Lesson 02</a>
+</div>
+</footer>
+
+<script>
+document.querySelectorAll('#quiz [data-q]').forEach(function (q) {
+  var fb = q.querySelector('.feedback');
+  q.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      q.querySelectorAll('button').forEach(function (x){ x.disabled = true; });
+      if (b.hasAttribute('data-correct')) {
+        b.classList.add('correct'); fb.textContent = 'Correct.';
+      } else {
+        b.classList.add('wrong');
+        var c = q.querySelector('[data-correct]'); c.classList.add('correct');
+        fb.textContent = 'Not quite — the highlighted answer is right.';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

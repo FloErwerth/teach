@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3 · Leave artifacts the team inherits</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+
+<p class="kicker">Lesson 03 · Human-in-the-loop AI coding</p>
+<h1>Leave artifacts the team inherits</h1>
+<p class="lede">A grill that ends in your head ends with you. The two things that survive it —
+a tightened <code>CONTEXT.md</code> and the occasional ADR — are what carry your hard-won
+understanding to the colleague reviewing your PR.</p>
+
+<span class="mission-tag">Mission: the rationale arrives before the reviewer does</span>
+
+<h2>Last lesson, in one breath</h2>
+<p>Before clicking anything: in Lesson 2 you sorted every question into three buckets. Which
+bucket holds the questions <em>only you</em> can answer — the ones your whole session exists for?
+Answer from memory, then check the quiz.</p>
+
+<h2>Where the understanding leaks out</h2>
+<p>You run a sharp grill. The fuzzy terms get decided, the edge cases get pinned, the trade-off
+gets made. Then you implement, open the PR — and all of that lives nowhere but in a scrolled-past
+chat transcript. Your reviewer re-derives it from scratch, in comments. The session saved
+<em>you</em> three rounds and cost <em>them</em> three anyway.</p>
+
+<p>The fix is the "with docs" half of the skill, and it is not bookkeeping. The artifacts are how
+the context you front-loaded reaches the next human — so the rationale lands on their desk
+<em>before</em> they start typing questions.</p>
+
+<div class="box warn">
+<h3>You don't write these — the agent does</h3>
+<p>This is the part people miss: <strong>you never sit down and author <code>CONTEXT.md</code> or an
+ADR yourself.</strong> The agent writes them <em>for</em> you, inline, <em>during the grilling
+session</em> — the moment a term gets pinned or a trade-off gets made, the skill drafts the entry.
+Your job as the prompter is not to type the doc; it's to <strong>steer and approve</strong> what the
+agent proposes — confirm the wording, correct a definition that drifted, or decline an ADR that
+doesn't earn its place. The documents are a by-product of the conversation, not homework you do
+afterward.</p>
+</div>
+
+<div class="box why">
+<h3>Two artifacts, two different jobs — never blur them</h3>
+<p><strong><code>CONTEXT.md</code> captures language.</strong> It is a glossary and nothing else:
+the canonical term for each concept, what it <em>is</em>, and the words to avoid. <strong>An ADR
+captures a decision.</strong> It records that a hard-to-reverse trade-off was made, and why.
+A term is not a decision; a decision is not a term. Routing each resolution to the right artifact
+is the whole skill of "with docs."</p>
+</div>
+
+<h2>CONTEXT.md: a glossary, ruthlessly</h2>
+<p>The format (<a href="file:///Users/forli/.agents/skills/grill-with-docs/CONTEXT-FORMAT.md">CONTEXT-FORMAT.md</a>,
+your primary source) is tighter than it looks, and the constraints are the point:</p>
+
+<ol class="steps">
+<li><strong>Define what it IS, not what it does.</strong> One or two sentences. The moment a
+definition starts describing behaviour or flow, you've drifted into spec — pull back.</li>
+<li><strong>Be opinionated.</strong> When several words mean the same thing, pick the best one and
+bury the rest under <code>_Avoid_</code>. A glossary that lists synonyms neutrally has decided nothing.</li>
+<li><strong>Only project-specific terms.</strong> If it's a general programming concept (timeout,
+retry, cache), it doesn't belong even if you use it constantly. Ask: is this unique to <em>this</em>
+domain? Only then does it earn a line.</li>
+</ol>
+
+<pre><code>**Trip**:
+A planned multi-stop journey a user saves and syncs across devices.
+_Avoid_: Route, itinerary, plan</code></pre>
+
+<blockquote>No implementation details. Not a spec, not a scratch pad. The discipline of keeping
+<code>CONTEXT.md</code> empty of "how" is exactly what keeps the "what" readable by everyone.</blockquote>
+
+<h2>ADRs: sparingly, and only when all three hold</h2>
+<p>The skill offers an ADR only when <strong>all three</strong> of these are true
+(<a href="file:///Users/forli/.agents/skills/grill-with-docs/ADR-FORMAT.md">ADR-FORMAT.md</a>):</p>
+
+<ol class="steps">
+<li><strong>Hard to reverse</strong> — changing your mind later carries real cost.</li>
+<li><strong>Surprising without context</strong> — a future reader will look at the code and ask
+"why on earth did they do it this way?"</li>
+<li><strong>The result of a real trade-off</strong> — there were genuine alternatives and you chose
+one for specific reasons.</li>
+</ol>
+
+<p>Miss any one and you skip it. Easy to reverse? You'll just reverse it. Not surprising? Nobody
+wonders why. No real alternative? There's nothing to record beyond "we did the obvious thing." And
+when one <em>does</em> qualify, keep it tiny — one to three sentences. The value is recording
+<em>that</em> a choice was made and <em>why</em>, not filling out sections.</p>
+
+<div class="box why">
+<h3>The test in one example</h3>
+<p>"We picked <code>Trip</code> over <code>Route</code>" → glossary, not an ADR. It's a term.
+"We store trips in SQLite, not the existing Realm store, because they must survive a cold launch
+and Realm's migration cost was too high" → ADR. Hard to reverse, genuinely surprising to the next
+engineer, and a real trade-off. Same session, two artifacts.</p>
+</div>
+
+<h2>The artifact you'll be tempted to throw away</h2>
+<p>The glossary and the ADR are the artifacts that <em>leave</em> the session. But the grilling context
+window is itself a dense, valuable artifact — a buffer packed with decisions you paid real tokens to
+reach. The classic waste is to finish a sharp grill, <code>/clear</code>, and start implementation on a
+blank slate. You've just binned the work.</p>
+
+<div class="box why">
+<h3>Every decision becomes code, a glossary line, or an ADR — <em>before</em> you clear</h3>
+<p>You have two honest exits from a grill. <strong>Implement in the same session</strong>, carrying the
+decisions live into the code (that's Lesson 4). Or, if you must hand off, first make sure every decision
+has landed somewhere durable — a <code>CONTEXT.md</code> term, an ADR, or the written plan — and only
+<em>then</em> clear. Nothing of value should survive only in a transcript you're about to scroll past.</p>
+</div>
+
+<h2>Check yourself</h2>
+<p>Retrieval, not recognition. The first question is a deliberate callback to Lesson 2.</p>
+
+<div class="quiz" id="quiz">
+  <div data-q>
+    <p class="q">1. <em>(Recall)</em> The bucket of questions only you can answer is…</p>
+    <button>Verifiable — in the code</button>
+    <button data-correct>Intent / constraint</button>
+    <button>Proposed-and-right</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">2. A <code>CONTEXT.md</code> entry should define a term by stating…</p>
+    <button data-correct>What it IS, not what it does</button>
+    <button>How it flows through the system</button>
+    <button>Every place it's used</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">3. An ADR is warranted only when all three hold: hard to reverse, surprising
+    without context, and…</p>
+    <button data-correct>The result of a real trade-off</button>
+    <button>Approved by a reviewer</button>
+    <button>Longer than a paragraph</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">4. "We chose SQLite over Realm for offline trips" belongs in…</p>
+    <button>CONTEXT.md</button>
+    <button data-correct>An ADR</button>
+    <button>Neither — it's just code</button>
+    <p class="feedback"></p>
+  </div>
+  <div data-q>
+    <p class="q">5. The move to avoid right after a sharp grill is…</p>
+    <button data-correct>Clearing the context and starting fresh</button>
+    <button>Implementing in the same session</button>
+    <button>Writing down a term you decided</button>
+    <p class="feedback"></p>
+  </div>
+</div>
+
+<h2>Your win for today</h2>
+<div class="box win">
+<h3>Make one artifact survive your next grill</h3>
+<ol class="steps">
+<li>Run a real grill (Lessons 1–2). When a term gets decided, watch the skill write it into
+<code>CONTEXT.md</code> — then check it against the three rules: is it tight, opinionated, and
+free of "how"? Fix it on the spot if not.</li>
+<li>Catch the one decision in the session that passes <strong>all three</strong> ADR tests. If the
+skill doesn't offer an ADR for it, ask it to. If it offers one for something that fails the test,
+decline and say which test it misses.</li>
+<li>Before opening your PR, link the ADR (or the changed glossary lines) in the description. Notice
+whether a comment you'd normally expect simply… doesn't arrive.</li>
+</ol>
+<p>Bring me the artifact and the comment that didn't happen. That's the mission, measured.</p>
+</div>
+
+<div class="box warn">
+<h3>Ask your teacher</h3>
+<p>The sharpest edge here is the glossary-vs-ADR boundary — and "does this clear all three ADR
+tests?" Paste me the resolution you're unsure about and I'll help you route it. Over-recording ADRs
+is as much a failure as never writing one.</p>
+</div>
+
+<h2>Read this next</h2>
+<p><strong>Primary sources</strong>, both short and both ground truth:
+<a href="file:///Users/forli/.agents/skills/grill-with-docs/CONTEXT-FORMAT.md">CONTEXT-FORMAT.md</a>
+(read the <em>Rules</em> section) and
+<a href="file:///Users/forli/.agents/skills/grill-with-docs/ADR-FORMAT.md">ADR-FORMAT.md</a>
+(read <em>When to offer an ADR</em>). They are the source these rules are drawn from — not my paraphrase.</p>
+
+<footer>
+<div class="nav">
+  <a href="0002-answer-like-the-expert.html">← Lesson 02</a>
+  <a href="../reference/grilling-session-playbook.html">Playbook</a>
+  <a href="../GLOSSARY.md">Glossary</a>
+  <a href="0004-drive-the-implementation.html">Next → Lesson 04</a>
+</div>
+</footer>
+
+<script>
+document.querySelectorAll('#quiz [data-q]').forEach(function (q) {
+  var fb = q.querySelector('.feedback');
+  q.querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      q.querySelectorAll('button').forEach(function (x){ x.disabled = true; });
+      if (b.hasAttribute('data-correct')) {
+        b.classList.add('correct'); fb.textContent = 'Correct.';
+      } else {
+        b.classList.add('wrong');
+        var c = q.querySelector('[data-correct]'); c.classList.add('correct');
+        fb.textContent = 'Not quite — the highlighted answer is right.';
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
